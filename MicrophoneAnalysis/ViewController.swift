@@ -12,16 +12,15 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    @IBOutlet private var frequencyLabel: UILabel!
-    @IBOutlet private var amplitudeLabel: UILabel!
-    @IBOutlet private var noteNameWithSharpsLabel: UILabel!
-    @IBOutlet private var noteNameWithFlatsLabel: UILabel!
-    @IBOutlet private var audioInputPlot: EZAudioPlot!
-    @IBOutlet private var audioInputPlotPost: EZAudioPlot!
-    @IBOutlet weak var stackViewBottom: UIStackView!
+    @IBOutlet weak var frequencyLabel: UILabel!
+    @IBOutlet weak var amplitudeLabel: UILabel!
+    @IBOutlet weak var noteNameWithSharpsLabel: UILabel!
+    @IBOutlet weak var noteNameWithFlatsLabel: UILabel!
+    @IBOutlet weak var audioInputPlot: EZAudioPlot!
+    @IBOutlet weak var audioInputPlotPost: EZAudioPlot!
     
+    @IBOutlet weak var stackViewBottom: UIStackView!
     @IBOutlet weak var topLabel: UILabel!
-//    @IBOutlet weak var pageButton: UIButton!
     
     var mic: AKMicrophone!
     var tracker: AKFrequencyTracker!
@@ -62,7 +61,6 @@ class ViewController: UIViewController {
         super.viewDidLoad()
 
         topLabel.layer.cornerRadius = topLabel.frame.height / 6
-//        pageButton.layer.cornerRadius = pageButton.frame.height / 6
 
         AKSettings.audioInputEnabled = true
         mic = AKMicrophone()
