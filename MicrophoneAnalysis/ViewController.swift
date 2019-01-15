@@ -17,7 +17,11 @@ class ViewController: UIViewController {
     @IBOutlet private var noteNameWithSharpsLabel: UILabel!
     @IBOutlet private var noteNameWithFlatsLabel: UILabel!
     @IBOutlet private var audioInputPlot: EZAudioPlot!
+    @IBOutlet private var audioInputPlotPost: EZAudioPlot!
     @IBOutlet weak var stackViewBottom: UIStackView!
+    
+    @IBOutlet weak var topLabel: UILabel!
+//    @IBOutlet weak var pageButton: UIButton!
     
     var mic: AKMicrophone!
     var tracker: AKFrequencyTracker!
@@ -44,19 +48,27 @@ class ViewController: UIViewController {
         audioInputPlot.addSubview(plot)
     }
 
+    func setupPlotPost() {
+        let plotPost = AKNodeOutputPlot(reverbMixer, frame: audioInputPlotPost.bounds)
+        plotPost.plotType = .rolling
+        plotPost.shouldFill = true
+        plotPost.shouldMirror = true
+        plotPost.color = UIColor.orange
+        plotPost.backgroundColor = UIColor.darkGray
+        audioInputPlotPost.addSubview(plotPost)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        topLabel.layer.cornerRadius = topLabel.frame.height / 6
+//        pageButton.layer.cornerRadius = pageButton.frame.height / 6
 
         AKSettings.audioInputEnabled = true
         mic = AKMicrophone()
         tracker = AKFrequencyTracker(mic)
         booster = AKBooster(tracker, gain: 1)
 
-        //delay = AKDelay(booster)
-        //delay.rampDuration = 0.5 // Allows for some cool effects
-        //delay.feedback = 0.5
-//        delay.start()
         decimator = AKDecimator(booster)
         deciMixer = AKDryWetMixer(booster, decimator)
         reverb = AKCostelloReverb(deciMixer)
@@ -64,18 +76,21 @@ class ViewController: UIViewController {
         
         setupUI()
         
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
         AudioKit.output = reverbMixer
         do {
             try AudioKit.start()
         } catch {
             AKLog("AudioKit did not start!")
         }
+        
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+
         setupPlot()
+        setupPlotPost()
         Timer.scheduledTimer(timeInterval: 0.1,
                              target: self,
                              selector: #selector(ViewController.updateUI),
@@ -163,29 +178,7 @@ class ViewController: UIViewController {
             format: "%0.2f") { sliderValue in
                 self.reverbMixer.balance = sliderValue
         })
-//
-//        stackView.addArrangedSubview(AKSlider(
-//            property: "Reverb Feedback",
-//            value: self.reverb.feedback,
-//            range: 0 ... 0.99,
-//            format: "%0.2f") { sliderValue in
-//                self.reverb.feedback = sliderValue
-//        })
-//
-//        stackView.addArrangedSubview(AKSlider(
-//            property: "Reverb Mix",
-//            value: self.reverbMixer.balance,
-//            format: "%0.2f") { sliderValue in
-//                self.reverbMixer.balance = sliderValue
-//        })
-//
-//        stackView.addArrangedSubview(AKSlider(
-//            property: "Output Volume",
-//            value: self.silence.gain,
-//            range: 0 ... 2,
-//            format: "%0.2f") { sliderValue in
-//                self.silence.gain = sliderValue
-//        })
+
         
 //        view.addSubview(stackViewBottom)
 //
@@ -196,66 +189,4 @@ class ViewController: UIViewController {
 //        stackViewBottom.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
     }
 
-    
-//    func setupUIOrig() {
-//        let stackView = UIStackView()
-//        stackView.axis = .vertical
-//        stackView.distribution = .fillEqually
-//        stackView.alignment = .fill
-//        stackView.translatesAutoresizingMaskIntoConstraints = false
-//        stackView.spacing = 10
-//
-//        stackView.addArrangedSubview(AKSlider(
-//            property: "Delay Time",
-//            value: self.delay.time,
-//            format: "%0.2f s") { sliderValue in
-//                self.delay.time = sliderValue
-//        })
-//
-//        stackView.addArrangedSubview(AKSlider(
-//            property: "Delay Feedback",
-//            value: self.delay.feedback,
-//            range: 0 ... 0.99,
-//            format: "%0.2f") { sliderValue in
-//                self.delay.feedback = sliderValue
-//        })
-//
-//        stackView.addArrangedSubview(AKSlider(
-//            property: "Delay Mix",
-//            value: self.delayMixer.balance,
-//            format: "%0.2f") { sliderValue in
-//                self.delayMixer.balance = sliderValue
-//        })
-//
-//        stackView.addArrangedSubview(AKSlider(
-//            property: "Reverb Feedback",
-//            value: self.reverb.feedback,
-//            range: 0 ... 0.99,
-//            format: "%0.2f") { sliderValue in
-//                self.reverb.feedback = sliderValue
-//        })
-//
-//        stackView.addArrangedSubview(AKSlider(
-//            property: "Reverb Mix",
-//            value: self.reverbMixer.balance,
-//            format: "%0.2f") { sliderValue in
-//                self.reverbMixer.balance = sliderValue
-//        })
-//
-//        stackView.addArrangedSubview(AKSlider(
-//            property: "Output Volume",
-//            value: self.silence.gain,
-//            range: 0 ... 2,
-//            format: "%0.2f") { sliderValue in
-//                self.silence.gain = sliderValue
-//        })
-//
-//        view.addSubview(stackView)
-//
-//        stackView.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.9).isActive = true
-//        stackView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.9).isActive = true
-//
-//        stackView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-//        stackView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
-//    }
 }
