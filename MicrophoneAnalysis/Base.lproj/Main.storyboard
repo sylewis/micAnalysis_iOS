@@ -43,9 +43,15 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" horizontalCompressionResistancePriority="747" text="-" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YVA-cp-koK">
-                                                <rect key="frame" x="92.5" y="0.0" width="239" height="20.5"/>
+                                                <rect key="frame" x="92.5" y="0.0" width="227.5" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="752" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gQJ-dF-4Jj" userLabel="MicFreq Label">
+                                                <rect key="frame" x="320" y="0.0" width="11.5" height="20.5"/>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="752" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xph-d4-IE8">
@@ -66,9 +72,15 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" horizontalCompressionResistancePriority="747" text="-" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8un-rR-V1f">
-                                                <rect key="frame" x="90.5" y="0.0" width="241" height="20.5"/>
+                                                <rect key="frame" x="90.5" y="0.0" width="229.5" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="752" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XEt-9k-N3B" userLabel="MicAmp Label">
+                                                <rect key="frame" x="320" y="0.0" width="11.5" height="20.5"/>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="752" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1mf-d7-blN">
@@ -127,7 +139,7 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Qkg-24-n9i" userLabel="Plot Stack View">
+                            <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="752" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Qkg-24-n9i" userLabel="Plot Stack View">
                                 <rect key="frame" x="0.0" y="140" width="375" height="200"/>
                                 <subviews>
                                     <view opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="EaM-zb-3c9" userLabel="Audio Input Plot" customClass="EZAudioPlot">
@@ -185,7 +197,6 @@
                             <constraint firstItem="Qkg-24-n9i" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Ohr-oA-YTg"/>
                             <constraint firstItem="76e-d7-BKs" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="SE4-Wv-aF9"/>
                             <constraint firstItem="76e-d7-BKs" firstAttribute="top" secondItem="ye7-0E-9CU" secondAttribute="bottom" constant="8" id="Syg-Rl-iy0"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="VhR-vv-NcS" secondAttribute="bottom" id="T9Z-K5-lvm"/>
                             <constraint firstItem="ye7-0E-9CU" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="bSq-9d-M4I"/>
                             <constraint firstItem="76e-d7-BKs" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="hdt-mP-kpe"/>
                             <constraint firstAttribute="trailing" secondItem="Qkg-24-n9i" secondAttribute="trailing" id="itX-yc-dhQ"/>
@@ -200,6 +211,8 @@
                         <outlet property="audioInputPlot" destination="EaM-zb-3c9" id="8gy-tO-gM5"/>
                         <outlet property="audioInputPlotPost" destination="y26-wa-J4B" id="6zs-sC-kKE"/>
                         <outlet property="frequencyLabel" destination="xph-d4-IE8" id="boL-lq-f7H"/>
+                        <outlet property="micAmplitudeLabel" destination="XEt-9k-N3B" id="tyy-lO-Ip9"/>
+                        <outlet property="micFrequencyLabel" destination="gQJ-dF-4Jj" id="gIZ-0c-CGb"/>
                         <outlet property="noteNameWithFlatsLabel" destination="Mcf-Kn-Hg2" id="yxJ-hW-1xe"/>
                         <outlet property="noteNameWithSharpsLabel" destination="3aS-E9-IjQ" id="EWN-fL-EKq"/>
                         <outlet property="stackViewBottom" destination="VhR-vv-NcS" id="b5E-Dm-MTo"/>

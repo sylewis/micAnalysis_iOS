@@ -16,15 +16,21 @@ class ViewController: UIViewController {
     @IBOutlet weak var amplitudeLabel: UILabel!
     @IBOutlet weak var noteNameWithSharpsLabel: UILabel!
     @IBOutlet weak var noteNameWithFlatsLabel: UILabel!
+    @IBOutlet weak var micFrequencyLabel: UILabel!
+    @IBOutlet weak var micAmplitudeLabel: UILabel!
     @IBOutlet weak var audioInputPlot: EZAudioPlot!
     @IBOutlet weak var audioInputPlotPost: EZAudioPlot!
+//    @IBOutlet weak var oscInputPlot: EZAudioPlot!
     
     @IBOutlet weak var stackViewBottom: UIStackView!
     @IBOutlet weak var topLabel: UILabel!
     
+    // ! Operator unwraps
     var mic: AKMicrophone!
+    var micTracker: AKMicrophoneTracker!
     var tracker: AKFrequencyTracker!
     var booster: AKBooster!
+    var oscillator1 = AKOscillator(waveform: AKTable(.sine))
     
     //Add vars from Filter effects proj example
     //var delay: AKDelay!
@@ -32,6 +38,7 @@ class ViewController: UIViewController {
     var deciMixer: AKDryWetMixer!
     var reverb: AKCostelloReverb!
     var reverbMixer: AKDryWetMixer!
+    var mixer = AKMixer()
 
     let noteFrequencies = [16.35, 17.32, 18.35, 19.45, 20.6, 21.83, 23.12, 24.5, 25.96, 27.5, 29.14, 30.87]
     let noteNamesWithSharps = ["C", "C♯", "D", "D♯", "E", "F", "F♯", "G", "G♯", "A", "A♯", "B"]
@@ -57,6 +64,17 @@ class ViewController: UIViewController {
         audioInputPlotPost.addSubview(plotPost)
     }
 
+//    func setupPlotOsc() {
+//        let plotOsc = AKNodeOutputPlot(oscillator1, frame: oscInputPlot.bounds)
+//        plotOsc.plotType = .rolling
+//        plotOsc.shouldFill = true
+//        plotOsc.shouldMirror = true
+//        plotOsc.color = UIColor.yellow
+//        plotOsc.backgroundColor = UIColor.darkGray
+//        oscInputPlot.addSubview(plotOsc)
+//    }
+    
+    //Put initial setup code that is run once at load here
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -64,6 +82,7 @@ class ViewController: UIViewController {
 
         AKSettings.audioInputEnabled = true
         mic = AKMicrophone()
+        micTracker = AKMicrophoneTracker(hopSize: 4_096, peakCount: 20)
         tracker = AKFrequencyTracker(mic)
         booster = AKBooster(tracker, gain: 1)
 
@@ -72,23 +91,37 @@ class ViewController: UIViewController {
         reverb = AKCostelloReverb(deciMixer)
         reverbMixer = AKDryWetMixer(deciMixer, reverb)
         
-        setupUI()
+        oscillator1.frequency = 0
+        oscillator1.amplitude = 0.025
         
-        AudioKit.output = reverbMixer
+        mixer = AKMixer(oscillator1, reverbMixer)
+        
+        AudioKit.output = mixer
         do {
             try AudioKit.start()
         } catch {
             AKLog("AudioKit did not start!")
         }
         
+        setupUI()
+        oscillator1.start()
+        micTracker.start()
     }
 
+    //Great place to show and hide stuff before view appears
+    override func viewWillAppear(_ animated: Bool) {
+        //Code here
+    }
+    
+    //Good place to start animations etc
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
 
         setupPlot()
         setupPlotPost()
+//        setupPlotOsc()
+
         Timer.scheduledTimer(timeInterval: 0.1,
                              target: self,
                              selector: #selector(ViewController.updateUI),
@@ -100,9 +133,11 @@ class ViewController: UIViewController {
         
  
         
-        if tracker.amplitude > 0.1 {
+        if tracker.amplitude > 0.05 {
             frequencyLabel.text = String(format: "%0.1f", tracker.frequency)
-
+            
+            oscillator1.frequency = tracker.frequency
+//            var micFrequency = Float(micTracker.frequency)
             var frequency = Float(tracker.frequency)
             while frequency > Float(noteFrequencies[noteFrequencies.count - 1]) {
                 frequency /= 2.0
@@ -126,23 +161,30 @@ class ViewController: UIViewController {
             noteNameWithFlatsLabel.text = "\(noteNamesWithFlats[index])\(octave)"
         }
         amplitudeLabel.text = String(format: "%0.2f", tracker.amplitude)
+        
+        micFrequencyLabel.text = String(format: "%0.2f", micTracker.frequency)
+        
+        micAmplitudeLabel.text = String(format: "%0.2f", micTracker.amplitude)
+        
+    }
+    
+    func generateTone() {
+        
     }
     
     func setupUI() {
-//        let stackView = UIStackView()
-//        let stackView = stackViewBottom
 
         stackViewBottom.axis = .vertical
         stackViewBottom.distribution = .fillEqually
         stackViewBottom.alignment = .fill
         stackViewBottom.translatesAutoresizingMaskIntoConstraints = false
-        stackViewBottom.spacing = 10
+        stackViewBottom.spacing = 0
         
         stackViewBottom.addArrangedSubview(AKSlider(
             property: "Mic Monitor Level",
             value: self.booster.gain,
             range: 0 ... 1.5,
-            format: "%0.2f s") { sliderValue in
+            format: "%0.2f") { sliderValue in
                 self.booster.gain = sliderValue
         })
         
@@ -175,6 +217,14 @@ class ViewController: UIViewController {
             value: self.reverbMixer.balance,
             format: "%0.2f") { sliderValue in
                 self.reverbMixer.balance = sliderValue
+        })
+        
+        stackViewBottom.addArrangedSubview(AKSlider(
+            property: "Osc1 Volume",
+            value: self.oscillator1.amplitude,
+            range: 0 ... 0.1,
+            format: "%0.2f") { sliderValue in
+                self.oscillator1.amplitude = sliderValue
         })
 
         
